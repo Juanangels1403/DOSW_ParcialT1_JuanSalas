@@ -1,0 +1,75 @@
+factory method
+interface Product { String execute(String input); }
+
+class ProductA implements Product {
+    public String execute(String input){ return "A: " + input; }
+}
+class ProductB implements Product {
+    public String execute(String input){ return "B: " + input; }
+}
+
+abstract class Service {
+    public final String process(String input) {
+        Product p = createProduct();     // FACTORY METHOD
+        return p.execute(input);
+    }
+    protected abstract Product createProduct();
+}
+
+class ServiceA extends Service {
+    protected Product createProduct(){ return new ProductA(); }
+}
+class ServiceB extends Service {
+    protected Product createProduct(){ return new ProductB(); }
+}
+----------------------------------------------------------------------------------------
+Decorator
+interface Product {
+    String execute(String input);
+}
+
+class CoreProduct implements Product {
+    public String execute(String input) {
+        return "Base: " + input;
+    }
+}
+
+abstract class ProductDecorator implements Product {
+    protected final Product wrap;
+
+    public ProductDecorator(Product wrap) {
+        this.wrap = wrap;
+    }
+}
+
+class AdditionalResponsibilityA extends ProductDecorator {
+
+    public AdditionalResponsibilityA(Product wrap) {
+        super(wrap);
+    }
+
+    public String execute(String input) {
+        String result = wrap.execute(input);
+        return "A(" + result + ")";
+    }
+}
+
+class AdditionalResponsibilityB extends ProductDecorator {
+
+    public AdditionalResponsibilityB(Product wrap) {
+        super(wrap);
+    }
+
+    public String execute(String input) {
+        String result = wrap.execute(input);
+        return "B(" + result + ")";
+    }
+}
+
+Product product = new AdditionalResponsibilityB(
+                      new AdditionalResponsibilityA(
+                          new CoreProduct()
+                      )
+                  );
+
+product.execute("data");
