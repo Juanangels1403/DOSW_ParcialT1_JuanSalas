@@ -15,3 +15,4 @@ Principios SOLID:
 S --> Se utilizo Unica instancia para las reservas.
 O --> Se utilizo el principio con el fin de poder extender futuras reservas mediante la implementacion del ´Patron Factory Method.
 
+.
